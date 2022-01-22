@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/keyboard_daisy/parts/PetalButton.tscn" type="PackedScene" id=1]
+
+[node name="PetalButtonSet" type="Node2D"]
+
+[node name="RightButton" parent="." instance=ExtResource( 1 )]
+position = Vector2( 72, 0 )
+text = "B"
+button_active = true
+button_color = Color( 1, 0, 0, 1 )
+
+[node name="BottomButton" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0, 72 )
+text = "A"
+button_active = true
+button_color = Color( 0.0784314, 1, 0, 1 )
+
+[node name="LeftButton" parent="." instance=ExtResource( 1 )]
+position = Vector2( -72, 0 )
+pressed_color = Color( 0.501961, 1, 0.831373, 1 )
+text = "X"
+button_active = true
+button_color = Color( 0, 0.0156863, 1, 1 )
+
+[node name="TopButton" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0, -72 )
+text = "Y"
+button_active = true
+button_color = Color( 1, 1, 0.2, 1 )

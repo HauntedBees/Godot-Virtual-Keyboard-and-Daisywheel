@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/petal.png-4a429481ed3951f1b2d17f0789121ffb.stex"
+path="res://.import/petal.png-7d02e6e7322af81b2f7ec7d5c0dcd770.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/petal.png"
-dest_files=[ "res://.import/petal.png-4a429481ed3951f1b2d17f0789121ffb.stex" ]
+source_file="res://addons/keyboard_daisy/assets/petal.png"
+dest_files=[ "res://.import/petal.png-7d02e6e7322af81b2f7ec7d5c0dcd770.stex" ]
 
 [params]
 

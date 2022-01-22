@@ -8,10 +8,43 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Node",
+"class": "DaisyWheel",
+"language": "GDScript",
+"path": "res://addons/keyboard_daisy/daisywheel.gd"
+}, {
+"base": "Sprite",
+"class": "Petal",
+"language": "GDScript",
+"path": "res://addons/keyboard_daisy/parts/Petal.gd"
+}, {
+"base": "Node2D",
+"class": "PetalButton",
+"language": "GDScript",
+"path": "res://addons/keyboard_daisy/parts/PetalButton.gd"
+}, {
+"base": "Node2D",
+"class": "PetalButtonSet",
+"language": "GDScript",
+"path": "res://addons/keyboard_daisy/parts/PetalButtonSet.gd"
+} ]
+_global_script_class_icons={
+"DaisyWheel": "",
+"Petal": "",
+"PetalButton": "",
+"PetalButtonSet": ""
+}
+
 [application]
 
 config/name="Virtual Keyboard and Daisywheel"
+run/main_scene="res://DaisyExample.tscn"
 config/icon="res://icon.png"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/keyboard_daisy/plugin.cfg" )
 
 [physics]
 
