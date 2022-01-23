@@ -1,6 +1,6 @@
 tool
 class_name DaisyWheel
-extends Node
+extends Node2D
 signal key_press(key)
 signal backspace
 signal new_value(val)
@@ -10,6 +10,7 @@ export (String) var capital_set := "ABCDEFGHIJKLMNOPQRSTUVWXYZ;\\&@#+"
 export (String) var numeric_set := "0123456789*'=\":%(){}[]<>~`"
 export (int) var gamepad_index := 0
 export (float) var dead_zone := 0.5
+export (bool) var active := true setget set_active
 
 const QTR_PI := PI / 4.0
 var petal_node:PackedScene = preload("res://addons/keyboard_daisy/parts/Petal.tscn")
@@ -36,12 +37,13 @@ func _ready():
 	add_child(info)
 
 func _on_receive_key(key:String):
+	if !active: return
 	value += key
 	emit_signal("key_press", key)
 	emit_signal("new_value", value)
 
 func _input(event:InputEvent):
-	if !(event is InputEventJoypadButton): return
+	if !active || !(event is InputEventJoypadButton): return
 	match (event as InputEventJoypadButton).button_index:
 		JOY_L: 
 			if value.length() == 0 || !event.pressed: return
@@ -84,3 +86,10 @@ func set_characters(new_mode:int, force:bool = false):
 			if idx < arr_size: inner_arr.append(arr[idx])
 			else: inner_arr.append("")
 		petals[i].button_characters = inner_arr
+
+func set_active(a:bool):
+	if active == a: return
+	active = a
+	visible = a
+	active_petal = null
+	for p in petals: (p as Petal).deactivate()
