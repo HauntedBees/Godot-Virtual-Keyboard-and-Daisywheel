@@ -89,13 +89,20 @@ func _input(event):
 	elif event.is_action_pressed("ui_down"): delta.y = 1
 	if delta.length() > 0:
 		var new_position := cursor_position + delta
+		var max_x := columns_per_section * inner_sections.size() - 1
+		if new_position.x < 0: new_position.x = max_x
+		elif new_position.x > max_x: new_position.x = 0
 		if move_cursor(new_position):
 			cursor_position = new_position
 			if cursor.get_parent().disabled:
 				var found_new_spot := false
 				var forward := new_position
-				while true:
+				var steps := max_x
+				while steps > 0:
+					steps -= 1
 					forward += delta
+					if forward.x < 0: forward.x = max_x
+					elif forward.x > max_x: forward.x = 0
 					var b := peek_cursor(forward)
 					if b == null: break
 					if !b.disabled:
