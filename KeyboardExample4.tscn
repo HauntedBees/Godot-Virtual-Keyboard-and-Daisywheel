@@ -3,21 +3,8 @@
 [ext_resource path="res://KeyboardExample.gd" type="Script" id=1]
 [ext_resource path="res://addons/keyboard_daisy/virtualkeyboard.gd" type="Script" id=2]
 
-[node name="KeyboardExample1" type="Node2D"]
+[node name="KeyboardExample4" type="Node2D"]
 script = ExtResource( 1 )
-
-[node name="VirtualKeyboard" type="MarginContainer" parent="."]
-margin_left = 244.0
-margin_top = 277.0
-margin_right = 804.0
-margin_bottom = 477.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-separate_special_options = true
 
 [node name="TextEdit" type="TextEdit" parent="."]
 margin_left = 389.0
@@ -37,3 +24,21 @@ margin_bottom = 214.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="VirtualKeyboard" type="MarginContainer" parent="."]
+margin_left = 243.0
+margin_top = 299.0
+margin_right = 803.0
+margin_bottom = 499.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+sections = [ "ABCDEFGHI", "JKLMNOPQR", "STUVWXYZ", "abcdefghi", "jklmnopqr", "stuvwxyz" ]
+columns_per_section = 3
+split_into_sections = 2
+min_rows = 4
+special_options = [ 1, 3, 0 ]
+switch_names = [ "STU", "jkl", "ABC" ]

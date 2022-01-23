@@ -1,0 +1,63 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://addons/keyboard_daisy/virtualkeyboard.gd" type="Script" id=1]
+[ext_resource path="res://KeyboardExample.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.337255, 0.270588, 0.270588, 1 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.176471, 0.0901961, 0.0901961, 1 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.482353, 0, 0, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+[sub_resource type="Theme" id=1]
+Button/colors/font_color = Color( 0.345098, 0.870588, 0.858824, 1 )
+Button/styles/disabled = SubResource( 3 )
+Button/styles/focus = SubResource( 4 )
+Button/styles/normal = SubResource( 5 )
+Button/styles/pressed = SubResource( 6 )
+VSeparator/constants/separation = 9
+VSeparator/styles/separator = SubResource( 2 )
+
+[node name="KeyboardExample2" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="VirtualKeyboard" type="MarginContainer" parent="."]
+margin_left = 230.0
+margin_top = 230.0
+margin_right = 817.0
+margin_bottom = 532.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+sections = [ "ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_0123456789/=@<>", "abcdefghijklmnopqrstuvwxyz{}|~!#$%&()*+-:;" ]
+delete_name = "DEL"
+
+[node name="TextEdit" type="TextEdit" parent="."]
+margin_left = 405.0
+margin_top = 72.0
+margin_right = 647.0
+margin_bottom = 185.0
+wrap_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 477.0
+margin_top = 195.0
+margin_right = 578.0
+margin_bottom = 209.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
