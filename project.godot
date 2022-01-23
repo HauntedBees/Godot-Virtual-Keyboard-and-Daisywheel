@@ -45,8 +45,12 @@ _global_script_class_icons={
 [application]
 
 config/name="Virtual Keyboard and Daisywheel"
-run/main_scene="res://DaisyExample.tscn"
+run/main_scene="res://KeyboardExample1.tscn"
 config/icon="res://icon.png"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/keyboard_daisy/plugin.cfg" )
 
 [physics]
 
