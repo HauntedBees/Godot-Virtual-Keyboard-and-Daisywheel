@@ -20,7 +20,9 @@ func _ready():
 func set_text(t:String):
 	text = t
 	if button_text != null: button_text.text = t
+	set_active(text != "")
 func set_active(b:bool):
+	if text == "": b = false
 	button_active = b
 	if button_icon != null: button_icon.visible = b
 func set_color(c:Color):
