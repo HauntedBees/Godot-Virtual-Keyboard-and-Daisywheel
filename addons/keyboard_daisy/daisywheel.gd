@@ -44,11 +44,11 @@ func _input(event:InputEvent):
 	if !(event is InputEventJoypadButton): return
 	match (event as InputEventJoypadButton).button_index:
 		JOY_L: 
-			if value.length() == 0: return
+			if value.length() == 0 || !event.pressed: return
 			emit_signal("backspace")
 			value = value.substr(0, value.length() - 1)
 			emit_signal("new_value", value)
-		JOY_R: _on_receive_key(" ")
+		JOY_R: if event.pressed: _on_receive_key(" ")
 		JOY_L2: set_characters(NUMERIC_MODE if event.pressed else MAIN_MODE)
 		JOY_R2: set_characters(CAPITAL_MODE if event.pressed else MAIN_MODE)
 
