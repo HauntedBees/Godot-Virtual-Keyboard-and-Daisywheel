@@ -243,7 +243,11 @@ func _on_key_press(b:Button):
 	for sn in switch_names:
 		if b.text == sn:
 			current_division = (current_division + 1) % num_divisions
+			cursor.get_parent().remove_child(cursor)
 			reset_sections()
+			var potential_cursor_pos := _find_switch_key()
+			cursor_position = potential_cursor_pos if potential_cursor_pos.x >= 0 else Vector2.ZERO
+			move_cursor(cursor_position, true)
 			return
 	match b.text:
 		confirm_name:
@@ -258,6 +262,18 @@ func _on_key_press(b:Button):
 			value += b.text
 			emit_signal("key_pressed", b.text)
 			emit_signal("new_value", value)
+
+func _find_switch_key() -> Vector2:
+	var last_section:Node = inner_sections[inner_sections.size() - 1]
+	var num_rows := last_section.get_child_count() - 1
+	var last_row:Node = last_section.get_child(num_rows)
+	var last_buttons := last_row.get_children()
+	for i in last_buttons.size():
+		var b:Button = last_buttons[i]
+		if b.disabled: continue
+		if last_buttons[i].text == switch_names[current_division]:
+			return Vector2(columns_per_section * (split_into_sections - 1) + i, num_rows)
+	return Vector2(-1, -1)
 
 func _backspace():
 	value = value.substr(0, value.length() - 1)
