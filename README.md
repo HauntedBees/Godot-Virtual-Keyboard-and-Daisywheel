@@ -1,4 +1,4 @@
-# Godot 3.4 Virtual Keyboard andDaisywheel
+# Godot 3.4 Virtual Keyboard and Daisywheel
 A virtual on-screen keyboard supporting gamepad and mouse-based input as well as a daisywheel supporting gamepad input.
 
 # Installation
