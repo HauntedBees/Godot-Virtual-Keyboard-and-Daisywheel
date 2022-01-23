@@ -6,6 +6,8 @@ signal new_value(s)
 signal confirm(s)
 signal backspace
 
+export(PackedScene) var cursor_scene:PackedScene = preload("res://addons/keyboard_daisy/DefaultCursor.tscn") setget set_cursor_scene
+export(String) var backspace_action := "ui_cancel"
 export(Array,String) var sections := [
 	"ABCDEFGHIJKLMNOPQRSTUVWXYZ",
 	"abcdefghijklmnopqrstuvwxyz",
@@ -24,8 +26,10 @@ export(String) var delete_name := "BACK" setget set_delete_name
 export(Array, String) var switch_names := ["ABC", "abc"] setget set_switch_names
 
 var value := ""
+var cursor:CanvasItem
 var cursor_position := Vector2(0, 0)
 var main_section:Container
+var inner_sections := []
 var current_division := 0
 var num_divisions := 0
 
@@ -33,6 +37,8 @@ func _ready():
 	size_flags_horizontal = Container.SIZE_EXPAND_FILL
 	size_flags_vertical = Container.SIZE_EXPAND_FILL
 	reset_sections()
+	cursor = cursor_scene.instance()
+	move_cursor(cursor_position, true)
 
 func set_columns_per_section(c:int):
 	columns_per_section = c
@@ -67,17 +73,73 @@ func set_delete_name(s:String):
 func set_switch_names(a:Array):
 	switch_names = a
 	reset_sections()
+func set_cursor_scene(c:PackedScene):
+	cursor_scene = c
+	if cursor != null:
+		remove_child(cursor)
+		cursor.queue_free()
+		cursor = cursor_scene.instance()
+		move_cursor(cursor_position, true)
+
+func _input(event):
+	var delta := Vector2.ZERO
+	if event.is_action_pressed("ui_left"): delta.x = -1
+	elif event.is_action_pressed("ui_right"): delta.x = 1
+	if event.is_action_pressed("ui_up"): delta.y = -1
+	elif event.is_action_pressed("ui_down"): delta.y = 1
+	if delta.length() > 0:
+		var new_position := cursor_position + delta
+		if move_cursor(new_position):
+			cursor_position = new_position
+			if cursor.get_parent().disabled:
+				var found_new_spot := false
+				var forward := new_position
+				while true:
+					forward += delta
+					var b := peek_cursor(forward)
+					if b == null: break
+					if !b.disabled:
+						found_new_spot = true
+						break
+				if found_new_spot:
+					move_cursor(forward)
+					cursor_position = forward
+	if event.is_action_pressed("ui_accept"):
+		_on_key_press(cursor.get_parent())
+	elif backspace_action != "" && event.is_action_pressed(backspace_action):
+		_backspace()
+
+func move_cursor(new_position:Vector2, is_new:bool = false) -> bool:
+	var b:Button = peek_cursor(new_position)
+	if b == null: return false
+	if !is_new: cursor.get_parent().remove_child(cursor)
+	b.add_child(cursor)
+	if is_new: yield(get_tree(), "idle_frame")
+	cursor.rect_size = b.rect_size
+	return true
+func peek_cursor(new_position:Vector2) -> Button:
+	if new_position.x < 0 || new_position.y < 0: return null
+	var appropriate_section:int = floor(new_position.x / columns_per_section)
+	if appropriate_section >= inner_sections.size(): return null
+	var actual_x:int = int(new_position.x) % columns_per_section
+	var section:VBoxContainer = inner_sections[appropriate_section]
+	if new_position.y >= section.get_child_count(): return null
+	var row:HBoxContainer = section.get_child(int(new_position.y))
+	if actual_x >= row.get_child_count(): return null
+	return row.get_child(actual_x) as Button
 
 func reset_sections():
 	if !is_inside_tree(): return
 	for i in get_children():
 		remove_child(i)
 		i.queue_free()
+	inner_sections = []
 	var num_sections := sections.size()
 	if num_sections == 0: return
 	if num_sections == 1:
 		main_section = get_section(sections[0], true)
 		add_child(main_section)
+		inner_sections.append(main_section)
 	else:
 		main_section = _get_hbox()
 		add_child(main_section)
@@ -91,7 +153,9 @@ func reset_sections():
 		var last_section := relevant_sections.size() - 1
 		for i in relevant_sections.size():
 			if i > 0: main_section.add_child(VSeparator.new())
-			main_section.add_child(get_section(relevant_sections[i], i == last_section))
+			var inner_section := get_section(relevant_sections[i], i == last_section)
+			main_section.add_child(inner_section)
+			inner_sections.append(inner_section)
 
 func get_section(keys:String, last_section:bool) -> VBoxContainer:
 	var container := VBoxContainer.new()
@@ -164,8 +228,16 @@ func _get_button(t:String = "") -> Button:
 	b.rect_min_size = min_key_size
 	b.size_flags_horizontal = Container.SIZE_EXPAND_FILL
 	b.size_flags_vertical = Container.SIZE_EXPAND_FILL
+	b.focus_mode = Control.FOCUS_NONE
 	b.connect("pressed", self, "_on_key_press", [b])
+	b.connect("mouse_entered", self, "_on_hover", [b])
 	return b
+
+func _on_hover(b:Button):
+	if cursor == null: return
+	cursor.get_parent().remove_child(cursor)
+	b.add_child(cursor)
+	cursor.rect_size = b.rect_size
 
 func _on_key_press(b:Button):
 	for sn in switch_names:
@@ -181,10 +253,13 @@ func _on_key_press(b:Button):
 			emit_signal("key_pressed", b.text)
 			emit_signal("new_value", value)
 		delete_name:
-			value = value.substr(0, value.length() - 1)
-			emit_signal("backspace")
-			emit_signal("new_value", value)
+			_backspace()
 		_:
 			value += b.text
 			emit_signal("key_pressed", b.text)
 			emit_signal("new_value", value)
+
+func _backspace():
+	value = value.substr(0, value.length() - 1)
+	emit_signal("backspace")
+	emit_signal("new_value", value)

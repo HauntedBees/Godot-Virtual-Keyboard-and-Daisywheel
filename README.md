@@ -43,6 +43,12 @@ A keyboard you can click on or control with a gamepad based on **InputMap action
 
 ## Inspector Properties
 
+### Cursor Scene
+A **PackedScene** that will be instanced to create the cursor. The default cursor is a **NinePatchRect** Node; any other **Control** or **Node2D** Node can be used instead, or any Scene (custom or otherwise) that has a `rect_size` property. Make sure none of the Nodes in this **PackedScene** have a **MouseFilter** value of **Stop**, or clicks won't be able to propagate down to the keys.
+
+### Backspace Action
+An **InputMap action** that, when pressed, will simulate a backspace without the user having to navigate to/click the **Delete Special Option** (see below). If left blank, the user *must* use the **Delete Special Option** (if available) to delete characters.
+
 ### Sections
 An array of strings, where each character in the string will be a key on a section in the virtual keyboard. If you just want one keyboard with no separation into different sections, just use a one-item array.
 
@@ -92,9 +98,7 @@ Emitted every time the text changes (`key_press` or `backspace`).
 Emitted when the **Confirm Special Option** is pressed, with the full value of text typed passed along with it.
 
 ## Customization
-With the exception of the cursor, the **VirtualKeyboard** is built entirely with **HBoxContainer**, **VBoxContainer**, **Button**, and **VSeparator** Nodes, and as such, the **Theme** and **Theme Overrides** values in the **Control** section of the **Inspector** can be used to customize the styles of the keyboard, as seen in the `KeyboardExample2.tscn` example scene.
-
-**TODO**: The cursor.
+With the exception of the cursor, the **VirtualKeyboard** is built entirely with **HBoxContainer**, **VBoxContainer**, **Button**, and **VSeparator** Nodes, and as such, the **Theme** and **Theme Overrides** values in the **Control** section of the **Inspector** can be used to customize the styles of the keyboard, as seen in the `KeyboardExample2.tscn` example scene. The cursor can be replaced with the **Cursor Scene** property in the **Inspector**, as described above.
 
 # Example Scenes
 
