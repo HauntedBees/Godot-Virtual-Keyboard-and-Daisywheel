@@ -1,0 +1,13 @@
+[gd_scene format=2]
+
+[node name="KeyboardExample1" type="Node2D"]
+
+[node name="Button" type="Button" parent="."]
+margin_left = 755.0
+margin_top = 213.0
+margin_right = 785.0
+margin_bottom = 243.0
+text = "J"
+__meta__ = {
+"_edit_use_anchors_": false
+}

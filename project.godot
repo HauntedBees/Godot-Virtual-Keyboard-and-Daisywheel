@@ -28,12 +28,18 @@ _global_script_classes=[ {
 "class": "PetalButtonSet",
 "language": "GDScript",
 "path": "res://addons/keyboard_daisy/parts/PetalButtonSet.gd"
+}, {
+"base": "MarginContainer",
+"class": "VirtualKeyboard",
+"language": "GDScript",
+"path": "res://addons/keyboard_daisy/virtualkeyboard.gd"
 } ]
 _global_script_class_icons={
 "DaisyWheel": "",
 "Petal": "",
 "PetalButton": "",
-"PetalButtonSet": ""
+"PetalButtonSet": "",
+"VirtualKeyboard": ""
 }
 
 [application]
@@ -41,10 +47,6 @@ _global_script_class_icons={
 config/name="Virtual Keyboard and Daisywheel"
 run/main_scene="res://DaisyExample.tscn"
 config/icon="res://icon.png"
-
-[editor_plugins]
-
-enabled=PoolStringArray( "res://addons/keyboard_daisy/plugin.cfg" )
 
 [physics]
 
