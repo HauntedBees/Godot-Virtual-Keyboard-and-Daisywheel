@@ -2,8 +2,8 @@ tool
 class_name DaisyWheel
 extends Node2D
 signal key_press(key)
-signal backspace
 signal new_value(val)
+signal backspace
 
 export (String) var main_set := "abcdefghijklmnopqrstuvwxyz?!.,-_"
 export (String) var capital_set := "ABCDEFGHIJKLMNOPQRSTUVWXYZ;\\&@#+"
